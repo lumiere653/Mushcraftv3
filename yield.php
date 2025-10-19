@@ -118,7 +118,7 @@ $bestYield = $records ? max(array_column($records, 'yield_per_bag')) : 0;
                 <form method="POST" class="yield-form">
                     <div class="form-group">
                         <label class="form-label">Date</label>
-                        <input type="date" name="date" class="form-input" value="<?= date('Y-m-d') ?>" required>
+                        <input type="date" name="date" class="form-inputd" value="<?= date('Y-m-d') ?>" required>
                     </div>
 
                     <div class="form-group">
@@ -225,3 +225,4 @@ $bestYield = $records ? max(array_column($records, 'yield_per_bag')) : 0;
     </div>
 </body>
 </html>
+
