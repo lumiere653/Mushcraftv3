@@ -1,5 +1,13 @@
+<?php
+session_start();
+include 'config/db_connect.php';
 
-
+// Redirect if not logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: auth/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,16 +17,23 @@
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- ✅ HEADER / NAVBAR -->
     <header>
         <div class="logo-container">
             <div class="logo-text">Mushcraft</div>
+            <span class="welcome-text">Welcome, <?= htmlspecialchars($_SESSION['username']) ?></span>
         </div>
-        <nav>
-        <a href="home.php" class="nav-button home-button"><span></span> Home</a>
-        <a href="yield.php" class="nav-button home-button"><span></span> Yield Records</a>
-        <a href="sensor.php" class="nav-button home-button"><span></span> Sensor Dashboard</a>
-        <a href="auth/logout.php" class="nav-button logout-button" id="logoutBtn"><span>⎋</span> Logout</a>
+
+        <!-- Hamburger (visible only below 420px) -->
+        <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+
+        <!-- Navigation -->
+        <nav id="navMenu">
+            <a href="home.php" class="nav-button <?= ($current_page === 'home.php') ? 'active' : '' ?>"><span></span> Home</a>
+            <a href="yield.php" class="nav-button <?= ($current_page === 'yield.php') ? 'active' : '' ?>"><span></span> Yield Records</a>
+            <a href="sensor.php" class="nav-button <?= ($current_page === 'sensor.php') ? 'active' : '' ?>"><span></span> Sensor Dashboard</a>
+            <a href="auth/logout.php" class="nav-button logout-button" id="logoutBtn"><span>⎋</span> Logout</a>
         </nav>
     </header>
 <!-- Hero Section -->
@@ -265,6 +280,24 @@
             </div>
         </div>
     </footer>
+    <script>
+function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(event) {
+    const navMenu = document.getElementById('navMenu');
+    const hamburger = document.querySelector('.hamburger');
+    
+    if (window.innerWidth <= 420 && 
+        navMenu.classList.contains('show') && 
+        !navMenu.contains(event.target) && 
+        !hamburger.contains(event.target)) {
+        navMenu.classList.remove('show');
+    }
+});
+</script>
     <script src="js/logout.js"></script>
 </body>
 </html>
