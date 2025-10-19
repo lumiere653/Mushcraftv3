@@ -1,20 +1,30 @@
+<?php
+session_start();
+include 'config/db_connect.php';
+
+// Redirect if not logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: auth/login.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, device-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Environmental Monitoring Dashboard - EcoLife</title>
     <link rel="stylesheet" href="css/sensor.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 <body>
-    <header>
+<header>
         <div class="logo-container">
             <div class="logo-text">Mushcraft</div>
         </div>
         <nav>
-        <a href="home.php" class="nav-button home-button"> Return</a>
-        <a href="auth/logout.php" class="nav-button login-button"> Logout</a>
+            <a href="home.php" class="nav-button home-button"> Return</a>
+            <a href="auth/logout.php" class="nav-button login-button"> Logout</a>
         </nav>
     </header>
 
