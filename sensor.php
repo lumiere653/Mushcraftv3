@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-// Use namespace import mechanism (Recommended for future scalability)
-use Config\DatabaseConnection;
-
 // Use include_once for reliability and consistency
 include_once 'config/db_connect.php';
 
@@ -127,7 +124,7 @@ if (!isset($_SESSION['user_id'])) {
 
         <div class="actuators-section">
             <div class="section-title">Climate Controls</div>
-            
+
             <div class="actuator-item" id="humidifierItem">
                 <div class="actuator-header">
                     <div class="actuator-info">
