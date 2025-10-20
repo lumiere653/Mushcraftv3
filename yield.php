@@ -1,6 +1,11 @@
 <?php
 session_start();
-include 'config/db_connect.php';
+
+// Use namespace import mechanism (recommended for maintainability and adaptability)
+use Config\DatabaseConnection;
+
+// Use include_once for consistency and reliability
+include_once 'config/db_connect.php';
 
 // Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
@@ -47,7 +52,8 @@ $todayRecords = count(array_filter($records, fn($r) => $r['date'] === $today));
 $weekAgo = date('Y-m-d', strtotime('-7 days'));
 $weekHarvest = array_sum(array_map(fn($r) => $r['date'] >= $weekAgo ? $r['harvested_kg'] : 0, $records));
 $bestYield = $records ? max(array_column($records, 'yield_per_bag')) : 0;
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -62,8 +68,8 @@ $bestYield = $records ? max(array_column($records, 'yield_per_bag')) : 0;
             <div class="logo-text">Mushcraft</div>
         </div>
         <nav>
-            <a href="home.php" class="nav-button home-button"> Return</a>
-            <a href="auth/logout.php" class="nav-button login-button"> Logout</a>
+            <a href="home.php" class="nav-button home-button">Return</a>
+            <a href="auth/logout.php" class="nav-button login-button">Logout</a>
         </nav>
     </header>
 
@@ -193,36 +199,32 @@ $bestYield = $records ? max(array_column($records, 'yield_per_bag')) : 0;
                         </tr>
                     </thead>
                     <tbody>
-    <?php if (!empty($records)): ?>
-        <?php foreach ($records as $row): ?>
-            <tr>
-                <td><?= $row['id'] ?></td>
-                <td><?= date('M d, Y', strtotime($row['date'])) ?></td>
-                <td><?= $row['bags'] ?></td>
-                <td><?= $row['harvested_kg'] ?></td>
-                <td><?= $row['yield_per_bag'] ?></td>
-                <td><?= htmlspecialchars($row['notes']) ?></td>
-                <td>
-                    <a href="yield/delete_yield.php?id=<?= $row['id'] ?>" class="action-btn">Delete</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="7">
-                <div class="empty-state">
-                    <div class="empty-state-icon">📦</div>
-                    <div class="empty-state-text">No records yet. Start adding your yield data!</div>
-                </div>
-            </td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-
+                        <?php if (!empty($records)): ?>
+                            <?php foreach ($records as $row): ?>
+                                <tr>
+                                    <td><?= $row['id'] ?></td>
+                                    <td><?= date('M d, Y', strtotime($row['date'])) ?></td>
+                                    <td><?= $row['bags'] ?></td>
+                                    <td><?= $row['harvested_kg'] ?></td>
+                                    <td><?= $row['yield_per_bag'] ?></td>
+                                    <td><?= htmlspecialchars($row['notes']) ?></td>
+                                    <td><a href="yield/delete_yield.php?id=<?= $row['id'] ?>" class="action-btn">Delete</a></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📦</div>
+                                        <div class="empty-state-text">No records yet. Start adding your yield data!</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </body>
 </html>
-
