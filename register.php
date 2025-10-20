@@ -1,5 +1,5 @@
 <?php
-include("../config/db_connect.php");
+include_once "../config/db_connect.php"; // Fixed: removed parentheses and used include_once
 
 $error = "";
 
@@ -16,15 +16,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO users (first_name, last_name, email, password)
-                VALUES ('$first_name', '$last_name', '$email', '$hashed_password')";
+        // Use prepared statements for security
+        $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
 
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt->execute()) {
             echo "<script>alert('Registration successful! You can now login.'); window.location='login.php';</script>";
             exit;
         } else {
             $error = "Error: Email already exists or invalid data.";
         }
+
+        $stmt->close();
     }
 }
 ?>
@@ -197,6 +200,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         });
     </script>
-   
 </body>
 </html>
