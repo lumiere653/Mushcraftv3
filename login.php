@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../config/db_connect.php");
+include_once "../config/db_connect.php"; // Fixed: removed parentheses and used include_once
 
 $error = ""; // store error message
 
@@ -8,8 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $sql = "SELECT * FROM users WHERE email='$email'";
-    $result = $conn->query($sql);
+    // Use prepared statements to prevent SQL injection (optional but recommended improvement)
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
@@ -27,6 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $error = "No account found with that email.";
     }
+
+    $stmt->close();
 }
 ?>
 
