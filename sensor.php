@@ -134,7 +134,10 @@ if (!isset($_SESSION['user_id'])) {
                             <p>Moisture control</p>
                         </div>
                     </div>
-                    <div class="toggle-switch" id="humidifierToggle" onclick="toggleActuator('humidifier')">
+                    <div class="toggle-switch" id="humidifierToggle"
+                         role="button" tabindex="0"
+                         onclick="toggleActuator('humidifier')"
+                         onkeydown="if(event.key==='Enter'||event.key===' ') toggleActuator('humidifier')">
                         <div class="toggle-knob"></div>
                     </div>
                 </div>
@@ -159,7 +162,10 @@ if (!isset($_SESSION['user_id'])) {
                             <p>Air circulation</p>
                         </div>
                     </div>
-                    <div class="toggle-switch" id="fanToggle" onclick="toggleActuator('fan')">
+                    <div class="toggle-switch" id="fanToggle"
+                         role="button" tabindex="0"
+                         onclick="toggleActuator('fan')"
+                         onkeydown="if(event.key==='Enter'||event.key===' ') toggleActuator('fan')">
                         <div class="toggle-knob"></div>
                     </div>
                 </div>
